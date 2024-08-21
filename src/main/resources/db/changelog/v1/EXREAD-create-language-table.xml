@@ -6,7 +6,7 @@
 
     <changeSet id="EXREAD-create-language-table" author="evv">
         <createTable tableName="language">
-            <column name="id" type="INT8" autoIncrement="true">
+            <column name="id" type="UUID">
                 <constraints primaryKey="true"/>
             </column>
             <column name="short_name" type="VARCHAR(255)"/>

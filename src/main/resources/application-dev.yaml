@@ -4,18 +4,21 @@ server:
     context-path: /exread
 
 spring:
+  config.import: custom.properties
   datasource:
-    url: jdbc:postgresql://localhost:5433/exread
-    username: vova
-    password: adminvova
+    url: jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
     driver-class-name: org.postgresql.Driver
-    autoCommit: false
     hikari:
       auto-commit: false
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: none
+    show-sql: true
+    properties:
+      format_sql: true
   liquibase:
     enabled: true
     change-log: classpath:db/changelog/changelog.xml
