@@ -2,8 +2,10 @@ package dev.evv.extreading.controller
 
 import dev.evv.extreading.dto.LanguageDto
 import dev.evv.extreading.service.LanguageService
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import java.util.UUID
 
 @RestController
 @RequestMapping(path = ["/v1/lang"])
@@ -16,6 +18,12 @@ class LanguageController(
     fun createLanguage(@RequestBody languageDto:LanguageDto): ResponseEntity<LanguageDto> {
         println(languageDto)
         return ResponseEntity.ok(languageService.save(languageDto)) ;
+    }
+
+    @GetMapping("/{id}")
+    fun getLanguage(@PathVariable id:UUID) : ResponseEntity<LanguageDto> {
+        var languageDto: LanguageDto? = languageService.getById(id);
+        return ResponseEntity(languageDto, HttpStatus.OK)
     }
 
 }
