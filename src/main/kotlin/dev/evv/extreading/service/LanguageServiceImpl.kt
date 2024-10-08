@@ -1,12 +1,14 @@
 package dev.evv.extreading.service
 
 import dev.evv.extreading.dto.LanguageDto
+import dev.evv.extreading.dto.LanguageSearchRequest
 import dev.evv.extreading.exception.LanguageNotFoundException
 import dev.evv.extreading.mapper.LanguageMapper
 import dev.evv.extreading.model.LanguageEntity
 import dev.evv.extreading.repository.LanguageRepository
 import org.springframework.stereotype.Service
 import java.util.*
+import java.util.stream.Collectors
 
 @Service
 class LanguageServiceImpl(
@@ -22,6 +24,12 @@ class LanguageServiceImpl(
     override fun getById(id: UUID): LanguageDto {
         val languageEntity: LanguageEntity = languageRepository.findById(id).orElseThrow{ LanguageNotFoundException(id) }
         return languageMapper.toDto(languageEntity)
+    }
+
+    override fun search(searchRequest: LanguageSearchRequest): List<LanguageDto> {
+        return languageRepository.findAll().stream()
+            .map(languageMapper::toDto)
+            .collect(Collectors.toList())
     }
 
 }

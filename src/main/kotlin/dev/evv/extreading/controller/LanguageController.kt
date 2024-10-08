@@ -1,6 +1,7 @@
 package dev.evv.extreading.controller
 
 import dev.evv.extreading.dto.LanguageDto
+import dev.evv.extreading.dto.LanguageSearchRequest
 import dev.evv.extreading.service.LanguageService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -24,6 +25,11 @@ class LanguageController(
     fun getLanguage(@PathVariable id:UUID) : ResponseEntity<LanguageDto> {
         var languageDto: LanguageDto? = languageService.getById(id);
         return ResponseEntity(languageDto, HttpStatus.OK)
+    }
+
+    @PostMapping("/search")
+    fun searchLanguages(@RequestBody searchRequest:LanguageSearchRequest) : ResponseEntity<List<LanguageDto>> {
+        return ResponseEntity.ok().body(languageService.search(searchRequest));
     }
 
 }
