@@ -12,4 +12,8 @@ interface LanguageService {
 
     fun search(searchRequest: LanguageSearchRequest): List<LanguageDto>
 
+    fun deleteLanguageById(id: UUID)
+
+    fun updateLanguage(languageDto: LanguageDto?): LanguageDto?
+
 }

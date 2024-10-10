@@ -6,7 +6,7 @@ import dev.evv.extreading.service.LanguageService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import java.util.UUID
+import java.util.*
 
 @RestController
 @RequestMapping(path = ["/v1/lang"])
@@ -17,7 +17,6 @@ class LanguageController(
 
     @PostMapping
     fun createLanguage(@RequestBody languageDto:LanguageDto): ResponseEntity<LanguageDto> {
-        println(languageDto)
         return ResponseEntity.ok(languageService.save(languageDto)) ;
     }
 
@@ -30,6 +29,16 @@ class LanguageController(
     @PostMapping("/search")
     fun searchLanguages(@RequestBody searchRequest:LanguageSearchRequest) : ResponseEntity<List<LanguageDto>> {
         return ResponseEntity.ok().body(languageService.search(searchRequest));
+    }
+
+    @PutMapping
+    fun updateLanguage(@RequestBody languageDto: LanguageDto?): ResponseEntity<LanguageDto> {
+        return ResponseEntity.ok(languageService.updateLanguage(languageDto))
+    }
+
+    @DeleteMapping("/{id}")
+    fun deleteLanguage(@PathVariable id: UUID) {
+        languageService.deleteLanguageById(id)
     }
 
 }

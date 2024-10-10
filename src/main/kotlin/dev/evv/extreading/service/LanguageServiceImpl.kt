@@ -32,4 +32,15 @@ class LanguageServiceImpl(
             .collect(Collectors.toList())
     }
 
+    override fun deleteLanguageById(id: UUID) {
+        languageRepository.deleteById(id)
+    }
+
+    override fun updateLanguage(languageDto: LanguageDto?): LanguageDto? {
+        if (languageDto != null) {
+            var updated = languageMapper.toDto(languageRepository.save(languageMapper.toEntity(languageDto)))
+            return updated
+        }
+        return LanguageDto()
+    }
 }
