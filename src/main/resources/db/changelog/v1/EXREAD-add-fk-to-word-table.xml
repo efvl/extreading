@@ -1,0 +1,16 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
+
+    <changeSet id="EXREAD-add-fk-by-lang-table" author="evv">
+        <addForeignKeyConstraint baseColumnNames="book_id" baseTableName="exr_word"
+                                 constraintName="fk_word_book"
+                                 deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="book"/>
+        <addForeignKeyConstraint baseColumnNames="dictionary_id" baseTableName="exr_word"
+                                 constraintName="fk_word_dict"
+                                 deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="dictionary"/>
+    </changeSet>
+</databaseChangeLog>

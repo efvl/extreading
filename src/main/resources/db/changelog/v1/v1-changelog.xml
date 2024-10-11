@@ -6,4 +6,9 @@
 
     <include file="EXREAD-create-language-table.xml" relativeToChangelogFile="true"/>
     <include file="EXREAD-add-language-default-values.xml" relativeToChangelogFile="true"/>
+    <include file="EXREAD-create-book-table.xml" relativeToChangelogFile="true"/>
+    <include file="EXREAD-create-dictionary-table.xml" relativeToChangelogFile="true"/>
+    <include file="EXREAD-create-exrword-table.xml" relativeToChangelogFile="true"/>
+    <include file="EXREAD-add-fk-by-lang-table.xml" relativeToChangelogFile="true"/>
+    <include file="EXREAD-add-fk-to-word-table.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

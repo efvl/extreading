@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
+
+    <changeSet id="EXREAD-create-dictionary-table" author="evv">
+        <createTable tableName="dictionary">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="lang_id" type="UUID"/>
+            <column name="base_form" type="varchar(256)"/>
+            <column name="definition" type="varchar(512)"/>
+            <column name="example1" type="varchar(512)"/>
+            <column name="example2" type="varchar(512)"/>
+            <column name="info" type="varchar(256)"/>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
