@@ -1,3 +1,4 @@
+
 plugins {
 	kotlin("jvm") version "1.9.24"
 	kotlin("plugin.spring") version "1.9.24"
@@ -27,9 +28,13 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.liquibase:liquibase-core")
 	runtimeOnly("org.postgresql:postgresql")
+
 	implementation("org.mapstruct.extensions.spring:mapstruct-spring-annotations:1.1.1")
 	implementation("org.mapstruct:mapstruct:1.6.0")
 	kapt("org.mapstruct:mapstruct-processor:1.6.0")
+
+	implementation("com.querydsl:querydsl-jpa:5.1.0:jakarta")
+	kapt("com.querydsl:querydsl-apt:5.1.0:jakarta")
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.boot:spring-boot-testcontainers")
