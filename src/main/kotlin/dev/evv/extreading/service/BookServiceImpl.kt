@@ -1,5 +1,6 @@
 package dev.evv.extreading.service
 
+import com.querydsl.core.BooleanBuilder
 import com.querydsl.jpa.impl.JPAQueryFactory
 import dev.evv.extreading.dto.BookDto
 import dev.evv.extreading.dto.BookSearchRequest
@@ -32,11 +33,15 @@ class BookServiceImpl (
     override fun search(searchRequest: BookSearchRequest): List<BookDto> {
         val qBookEntity = QBookEntity.bookEntity
         val query = queryFactory.selectFrom(qBookEntity)
-
-
-        return bookRepository.findAll().stream()
+        val whereCause: BooleanBuilder = BooleanBuilder()
+        if (searchRequest.languageId != null){
+            whereCause.and(qBookEntity.language.id.eq(searchRequest.languageId))
+        }
+        query.from(qBookEntity).where(whereCause)
+        val bookList = query.fetch()
+        return bookList.stream()
             .map(bookMapper::toDto)
-            .collect(Collectors.toList())
+            .toList()
     }
 
     override fun deleteBookById(id: UUID) {
