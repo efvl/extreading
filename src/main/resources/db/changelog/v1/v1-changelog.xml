@@ -11,4 +11,7 @@
     <include file="EXREAD-create-exrword-table.xml" relativeToChangelogFile="true"/>
     <include file="EXREAD-add-fk-by-lang-table.xml" relativeToChangelogFile="true"/>
     <include file="EXREAD-add-fk-to-word-table.xml" relativeToChangelogFile="true"/>
+    <include file="EXREAD-add-columns-to-dict-table.xml" relativeToChangelogFile="true"/>
+    <include file="EXREAD-drop-columns-in-dict-word-tables.xml" relativeToChangelogFile="true"/>
+    <include file="EXREAD-add-unique-to-dict-table.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

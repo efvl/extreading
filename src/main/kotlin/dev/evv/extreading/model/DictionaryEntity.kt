@@ -16,14 +16,11 @@ class DictionaryEntity(
     @Column(name = "definition")
     var definition: String = "",
 
-    @Column(name = "example1")
-    var example1: String = "",
+    @Column(name = "txt_content")
+    var txtContent: String = "",
 
-    @Column(name = "example2")
-    var example2: String = "",
-
-    @Column(name = "info")
-    var info: String = "",
+    @Column(name = "grammar")
+    var grammar: String = "",
 
     ) : BaseIdEntity() {
 

@@ -10,7 +10,5 @@ data class ExrWordDto(
     var wordNum: Int = 0,
     var original: String = "",
     var txtContent: String = "",
-    var grammar: String = "",
-    var info: String = "",
     var dictionary: DictionaryDto,
 )

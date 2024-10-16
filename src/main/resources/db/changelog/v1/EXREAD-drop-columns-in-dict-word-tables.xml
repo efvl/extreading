@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
+
+    <changeSet id="EXREAD-drop-columns-in-dict-word-tables" author="evv">
+        <dropColumn tableName="dictionary">
+            <column name="info"/>
+            <column name="example1"/>
+            <column name="example2"/>
+        </dropColumn>
+        <dropColumn tableName="exr_word">
+            <column name="grammar"/>
+            <column name="info"/>
+        </dropColumn>
+    </changeSet>
+</databaseChangeLog>

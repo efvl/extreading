@@ -4,6 +4,7 @@ import com.querydsl.core.BooleanBuilder
 import com.querydsl.jpa.impl.JPAQueryFactory
 import dev.evv.extreading.dto.DictionaryDto
 import dev.evv.extreading.dto.DictionarySearchRequest
+import dev.evv.extreading.exception.DictionaryDuplicateException
 import dev.evv.extreading.exception.DictionaryNotFoundException
 import dev.evv.extreading.mapper.DictionaryMapper
 import dev.evv.extreading.model.DictionaryEntity
@@ -20,6 +21,13 @@ class DictionaryServiceImpl (
 ) : DictionaryService {
 
     override fun save(dictionaryDto: DictionaryDto): DictionaryDto {
+        val listDict = search(DictionarySearchRequest(
+            languageId = dictionaryDto.language.id,
+            txtContent = dictionaryDto.txtContent)
+        )
+        if (listDict.isNotEmpty()) {
+            throw DictionaryDuplicateException(dictionaryDto.txtContent, dictionaryDto.language.fullName)
+        }
         val dictionaryEntity: DictionaryEntity = dictionaryRepository.save(dictionaryMapper.toEntity(dictionaryDto))
         return dictionaryMapper.toDto(dictionaryEntity)
     }
@@ -33,8 +41,11 @@ class DictionaryServiceImpl (
         val qDictEntity = QDictionaryEntity.dictionaryEntity
         val query = queryFactory.selectFrom(qDictEntity)
         val whereCause: BooleanBuilder = BooleanBuilder()
-        if (searchRequest.languageId != null){
+        if (searchRequest.languageId != null) {
             whereCause.and(qDictEntity.language.id.eq(searchRequest.languageId))
+        }
+        if (searchRequest.txtContent != null) {
+            whereCause.and(qDictEntity.txtContent.eq(searchRequest.txtContent))
         }
         query.from(qDictEntity).where(whereCause)
         val dictList = query.fetch()

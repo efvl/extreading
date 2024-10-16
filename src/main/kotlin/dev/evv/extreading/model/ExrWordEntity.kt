@@ -25,12 +25,6 @@ class ExrWordEntity(
     @Column(name = "txt_content")
     var txtContent: String = "",
 
-    @Column(name = "grammar")
-    var grammar: String = "",
-
-    @Column(name = "info")
-    var info: String = "",
-
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "dictionary_id")
     var dictionary: DictionaryEntity,
