@@ -7,8 +7,8 @@ import jakarta.persistence.*
 class ExrWordEntity(
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "book_id")
-    var book: BookEntity,
+    @JoinColumn(nullable = true, name = "book_id")
+    var book: BookEntity?,
 
     @Column(name = "page_num")
     var pageNum: Int = 0,
@@ -26,8 +26,8 @@ class ExrWordEntity(
     var txtContent: String = "",
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "dictionary_id")
-    var dictionary: DictionaryEntity,
+    @JoinColumn(nullable = true, name = "dictionary_id")
+    var dictionary: DictionaryEntity?,
 
     ) : BaseIdEntity() {
 

@@ -1,6 +1,7 @@
 package dev.evv.extreading.controller
 
 import dev.evv.extreading.dto.ExrWordDto
+import dev.evv.extreading.dto.ExrWordListDto
 import dev.evv.extreading.dto.WordSearchRequest
 import dev.evv.extreading.service.WordService
 import org.springframework.http.HttpStatus
@@ -17,18 +18,29 @@ class WordController(
 
     @PostMapping
     fun createWord(@RequestBody wordDto: ExrWordDto): ResponseEntity<ExrWordDto> {
-        return ResponseEntity.ok(wordService.save(wordDto)) ;
+        return ResponseEntity.ok(wordService.save(wordDto))
     }
 
     @GetMapping("/{id}")
     fun getWord(@PathVariable id: UUID) : ResponseEntity<ExrWordDto> {
-        var wordDto: ExrWordDto? = wordService.getById(id);
+        var wordDto: ExrWordDto? = wordService.getById(id)
         return ResponseEntity(wordDto, HttpStatus.OK)
     }
 
     @PostMapping("/search")
     fun searchWords(@RequestBody searchRequest: WordSearchRequest) : ResponseEntity<List<ExrWordDto>> {
-        return ResponseEntity.ok().body(wordService.search(searchRequest));
+        return ResponseEntity.ok().body(wordService.search(searchRequest))
+    }
+
+    @PostMapping("/search/page")
+    fun searchPageWords(@RequestBody searchRequest: WordSearchRequest): ResponseEntity<List<ExrWordDto>> {
+        return ResponseEntity.ok().body(
+            wordService.getPageWords(WordSearchRequest(bookId = searchRequest.bookId, pageNum = searchRequest.pageNum)))
+    }
+
+    @PostMapping("/list")
+    fun createWords(@RequestBody wordList: ExrWordListDto): ResponseEntity<List<ExrWordDto>> {
+        return ResponseEntity.ok(wordService.createPageWords(wordList))
     }
 
     @PutMapping

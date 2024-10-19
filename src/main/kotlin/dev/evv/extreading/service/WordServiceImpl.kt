@@ -3,8 +3,8 @@ package dev.evv.extreading.service
 import com.querydsl.core.BooleanBuilder
 import com.querydsl.jpa.impl.JPAQueryFactory
 import dev.evv.extreading.dto.ExrWordDto
+import dev.evv.extreading.dto.ExrWordListDto
 import dev.evv.extreading.dto.WordSearchRequest
-import dev.evv.extreading.exception.DictionaryDuplicateException
 import dev.evv.extreading.exception.WordDuplicateException
 import dev.evv.extreading.exception.WordNotFoundException
 import dev.evv.extreading.mapper.ExrWordMapper
@@ -22,15 +22,9 @@ class WordServiceImpl (
 ) : WordService {
 
     override fun save(wordDto: ExrWordDto): ExrWordDto {
-        val listWords = search(WordSearchRequest(
-            bookId = wordDto.book.id,
-            pageNum = wordDto.pageNum,
-            lineNum = wordDto.lineNum,
-            wordNum = wordDto.wordNum
-        ))
-        if (listWords.isNotEmpty()) {
+        if (isWordExists(wordDto)) {
             throw WordDuplicateException("page:${wordDto.pageNum} line:${wordDto.lineNum} word:${wordDto.wordNum}",
-                wordDto.txtContent, wordDto.book.id)
+                wordDto.txtContent, wordDto.book?.id)
         }
         val wordEntity: ExrWordEntity = wordRepository.save(wordMapper.toEntity(wordDto))
         return wordMapper.toDto(wordEntity)
@@ -39,6 +33,35 @@ class WordServiceImpl (
     override fun getById(id: UUID): ExrWordDto {
         val wordEntity: ExrWordEntity = wordRepository.findById(id).orElseThrow{ WordNotFoundException(id) }
         return wordMapper.toDto(wordEntity)
+    }
+
+    override fun getPageWords(searchRequest: WordSearchRequest): List<ExrWordDto> {
+        val listWords = search(WordSearchRequest(
+            bookId = searchRequest.bookId,
+            pageNum = searchRequest.pageNum,
+        ))
+        return listWords
+    }
+
+    override fun createPageWords(wordList: ExrWordListDto): List<ExrWordDto> {
+        val result = mutableListOf<ExrWordDto>()
+        wordList.wordList.forEach {
+            if (!isWordExists(it)) {
+                val wordEntity: ExrWordEntity = wordRepository.save(wordMapper.toEntity(it))
+                result.add(wordMapper.toDto(wordEntity))
+            }
+        }
+        return result
+    }
+
+    fun isWordExists(wordDto: ExrWordDto):Boolean {
+        val listWords = search(WordSearchRequest(
+            bookId = wordDto.book?.id,
+            pageNum = wordDto.pageNum,
+            lineNum = wordDto.lineNum,
+            wordNum = wordDto.wordNum
+        ))
+        return listWords.isNotEmpty()
     }
 
     override fun search(searchRequest: WordSearchRequest): List<ExrWordDto> {
@@ -60,8 +83,11 @@ class WordServiceImpl (
         if (searchRequest.wordNum != null) {
             whereCause.and(qWordEntity.wordNum.eq(searchRequest.wordNum))
         }
-        query.from(qWordEntity).where(whereCause)
-        val wordList = query.fetch()
+        val wordList = query.from(qWordEntity)
+                .where(whereCause)
+                .orderBy(qWordEntity.lineNum.asc())
+                .orderBy(qWordEntity.wordNum.asc())
+                .fetch()
         return wordList.stream()
             .map(wordMapper::toDto)
             .toList()
