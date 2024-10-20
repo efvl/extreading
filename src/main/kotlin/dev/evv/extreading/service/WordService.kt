@@ -13,7 +13,11 @@ interface WordService {
 
     fun getPageWords(searchRequest: WordSearchRequest): List<ExrWordDto>
 
+    fun getLast5LinesWords(searchRequest: WordSearchRequest): List<ExrWordDto>
+
     fun createPageWords(wordList: ExrWordListDto): List<ExrWordDto>
+
+    fun deletePageWords(searchRequest: WordSearchRequest): Int
 
     fun search(searchRequest: WordSearchRequest): List<ExrWordDto>
 

@@ -43,6 +43,20 @@ class WordServiceImpl (
         return listWords
     }
 
+    override fun getLast5LinesWords(searchRequest: WordSearchRequest): List<ExrWordDto> {
+        val listWords = search(WordSearchRequest(
+            bookId = searchRequest.bookId,
+            pageNum = searchRequest.pageNum,
+        ))
+        if(listWords.isNotEmpty()) {
+            val lastNum = listWords.last().lineNum
+            val startLine = if ((lastNum - 5) > 0) (lastNum - 5) else 0
+            return listWords.filter { it.lineNum >= startLine }
+        } else {
+            return Collections.emptyList()
+        }
+    }
+
     override fun createPageWords(wordList: ExrWordListDto): List<ExrWordDto> {
         val result = mutableListOf<ExrWordDto>()
         wordList.wordList.forEach {
@@ -51,6 +65,11 @@ class WordServiceImpl (
                 result.add(wordMapper.toDto(wordEntity))
             }
         }
+        return result
+    }
+
+    override fun deletePageWords(searchRequest: WordSearchRequest): Int {
+        val result = wordRepository.deleteAllPageWords(bookId = searchRequest.bookId, pageNum = searchRequest.pageNum)
         return result
     }
 
@@ -87,6 +106,7 @@ class WordServiceImpl (
                 .where(whereCause)
                 .orderBy(qWordEntity.lineNum.asc())
                 .orderBy(qWordEntity.wordNum.asc())
+                .offset(0).limit(500)
                 .fetch()
         return wordList.stream()
             .map(wordMapper::toDto)

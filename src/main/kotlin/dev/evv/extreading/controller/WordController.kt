@@ -34,8 +34,17 @@ class WordController(
 
     @PostMapping("/search/page")
     fun searchPageWords(@RequestBody searchRequest: WordSearchRequest): ResponseEntity<List<ExrWordDto>> {
-        return ResponseEntity.ok().body(
-            wordService.getPageWords(WordSearchRequest(bookId = searchRequest.bookId, pageNum = searchRequest.pageNum)))
+        return ResponseEntity.ok().body(wordService.getPageWords(searchRequest))
+    }
+
+    @PostMapping("/delete/page")
+    fun deletePageWords(@RequestBody searchRequest: WordSearchRequest): ResponseEntity<Int> {
+        return ResponseEntity.ok().body(wordService.deletePageWords(searchRequest))
+    }
+
+    @PostMapping("/search/last5lines")
+    fun searchLast5Lines(@RequestBody searchRequest: WordSearchRequest): ResponseEntity<List<ExrWordDto>> {
+        return ResponseEntity.ok().body(wordService.getLast5LinesWords(searchRequest))
     }
 
     @PostMapping("/list")
