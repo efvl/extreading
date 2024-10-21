@@ -106,7 +106,7 @@ class WordServiceImpl (
                 .where(whereCause)
                 .orderBy(qWordEntity.lineNum.asc())
                 .orderBy(qWordEntity.wordNum.asc())
-                .offset(0).limit(500)
+                .offset(0).limit(600)
                 .fetch()
         return wordList.stream()
             .map(wordMapper::toDto)

@@ -17,4 +17,8 @@ interface WordRepository : JpaRepository<ExrWordEntity, UUID>, QuerydslPredicate
     @Query("DELETE FROM ExrWordEntity ew WHERE ew.book.id = :bookId and ew.pageNum = :pageNum")
     fun deleteAllPageWords(bookId: UUID?, pageNum: Int?): Int
 
+    @Transactional
+    @Query("SELECT COUNT(ew) FROM ExrWordEntity ew WHERE ew.book.id = :bookId and ew.txtContent = :txtContent")
+    fun countWordsInBook(bookId: UUID?, txtContent: String?): Int
+
 }

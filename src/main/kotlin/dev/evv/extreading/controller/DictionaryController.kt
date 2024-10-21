@@ -2,6 +2,7 @@ package dev.evv.extreading.controller
 
 import dev.evv.extreading.dto.DictionaryDto
 import dev.evv.extreading.dto.DictionarySearchRequest
+import dev.evv.extreading.dto.DictionaryStats
 import dev.evv.extreading.service.DictionaryService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -29,6 +30,11 @@ class DictionaryController(
     @PostMapping("/search")
     fun searchDictionaries(@RequestBody searchRequest: DictionarySearchRequest) : ResponseEntity<List<DictionaryDto>> {
         return ResponseEntity.ok().body(dictionaryService.search(searchRequest));
+    }
+
+    @PostMapping("/search/stats")
+    fun searchDictionaryAndStats(@RequestBody searchRequest: DictionarySearchRequest) : ResponseEntity<DictionaryStats> {
+        return ResponseEntity.ok().body(dictionaryService.searchAndStats(searchRequest));
     }
 
     @PutMapping
